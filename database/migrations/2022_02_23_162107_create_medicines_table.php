@@ -18,6 +18,7 @@ class CreateMedicinesTable extends Migration
             $table->string('generic_name', 300);
             $table->string('form', 300);
             $table->string('restriction_formula', 300);
+            $table->string('description', 300);
             $table->tinyInteger('faskes_tk1');
             $table->tinyInteger('faskes_tk2');
             $table->tinyInteger('faskes_tk3');
