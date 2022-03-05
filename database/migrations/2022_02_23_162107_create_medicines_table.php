@@ -15,13 +15,17 @@ class CreateMedicinesTable extends Migration
     {
         Schema::create('medicines', function (Blueprint $table) {
             $table->id();
-            $table->string('generic_name', 300);
-            $table->string('form', 300);
-            $table->string('restriction_formula', 300);
-            $table->string('description', 300);
-            $table->tinyInteger('faskes_tk1');
-            $table->tinyInteger('faskes_tk2');
-            $table->tinyInteger('faskes_tk3');
+            $table->string('generic_name');
+            $table->string('form');
+            $table->string('restriction_formula')->nullable();
+            $table->double('price',12,2);
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('category_id');
+            $table->boolean('faskes1')->default(0);
+            $table->boolean('faskes2')->default(0);
+            $table->boolean('faskes3')->default(0);
+ 
+            
             $table->timestamps();
         });
     }
