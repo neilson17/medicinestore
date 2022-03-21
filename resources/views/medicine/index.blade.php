@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Toko Obat</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body>
+@extends('layout.conquer')
 
+@section('content')
 <div class="container">
   <h2>Daftar Obat</h2>
   <table class="table">
@@ -18,7 +9,10 @@
         <th>Nama</th>
         <th>Bentuk</th>
         <th>Formula</th>
+        <th>Kategori</th>
+        <th>Foto</th>
         <th>Deskripsi</th>
+        <th>Harga</th>
       </tr>
     </thead>
     <tbody>
@@ -28,13 +22,28 @@
             <td>{{$obat->generic_name}}</td>
             <td>{{$obat->form}}</td>
             <td>{{$obat->restriction_formula}}</td>
+            <td>{{$obat->category->name}}</td>
+            <td><img src="{{asset('images/'.$obat->image)}}" height="100px"/></td>
             <td>{{$obat->description}}</td>
+            <td>Rp{{$obat->price}}</td>
         </tr>  
         @endforeach
     </tbody>
   </table>
+  <h2>Daftar Obat</h2>
+  <div class="row">
+    @foreach($data as $d)
+    <div class="col-md-3">
+      <a href="/medicines/{{$d->id}}" target="_blank">
+        <div  style="padding: 10px; margin: 10px; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; border-radius: 10px; text-align:center;">
+          <img src="{{asset('images/'.$d->image)}}" height="100px"/>
+          <p><b>{{$d->generic_name}}</b></p>
+          <p>{{$d->form}}</p>
+          <p>Rp{{$d->price}}</p>
+        </div>
+      </a>
+    </div>
+    @endforeach
+  </div>
 </div>
-
-</body>
-</html>
-
+@endsection

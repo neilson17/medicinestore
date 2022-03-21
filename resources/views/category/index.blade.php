@@ -1,36 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Toko Obat</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body>
+@extends('layout.conquer')
 
-<div class="container">
-  <h2>Daftar Kategori</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Nama</th>
-        <th>Deskripsi</th>
-      </tr>
-    </thead>
-    <tbody>
-        <!-- Cara View 1 $data diganti $result  -->  
-        @foreach($data as $obat)
+@section('content')
+<div class="portlet">
+  <div class="portlet-title">
+    <div class="caption">
+      <i class="fa fa-reorder"></i>Daftar Kategori
+    </div>
+  </div>
+  <div class="portlet-body">
+    <table class="table">
+      <thead>
         <tr>
-            <td>{{$obat->name}}</td>
-            <td>{{$obat->description}}</td>
-        </tr>  
-        @endforeach
-    </tbody>
-  </table>
+          <th>Nama</th>
+          <th>Deskripsi</th>
+          <th>Obat-Obat</th>
+        </tr>
+      </thead>
+      <tbody>
+          <!-- Cara View 1 $data diganti $result  -->  
+          @foreach($data as $obat)
+          <tr>
+              <td>{{$obat->name}}</td>
+              <td>{{$obat->description}}</td>
+          </tr>
+          <tr>
+              <td colspan="2">
+              <div class="row">
+                @foreach($obat->medicines as $d)
+                <div class="col-md-3">
+                  <div  style="padding: 10px; margin: 10px; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; border-radius: 10px; text-align:center;">
+                    <img src="{{asset('images/'.$d->image)}}" height="100px"/>
+                    <p><b>{{$d->generic_name}}</b></p>
+                    <p>{{$d->form}}</p>
+                    <p>Rp{{$d->price}}</p>
+                  </div>
+                </div>
+                @endforeach
+              </div>
+            </td>
+          </tr>  
+          @endforeach
+      </tbody>
+    </table>
+  </div>
 </div>
-
-</body>
-</html>
-
+@endsection

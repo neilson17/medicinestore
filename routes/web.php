@@ -19,3 +19,10 @@ Route::get('/', function () {
 
 Route::resource('medicines', 'MedicineController');
 Route::resource('categories', 'CategoryController');
+
+Route::get('coba1', 'MedicineController@coba1');
+Route::get('coba2', 'MedicineController@coba2');
+Route::get('coba3', 'CategoryController@coba2');
+
+Route::get('report/listmedicine/{id}','CategoryController@showlist');
+Route::get('report/highestpricemedicine','CategoryController@showHighestPriceMedList');
