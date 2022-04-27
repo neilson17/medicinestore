@@ -10,4 +10,9 @@ class Medicine extends Model
         // Ayahnya dia adalah category  
         return $this->belongsTo('App\Category', 'category_id');
     }
+    
+    public function transactions(){
+        return $this->belongstoMany('App\Transaction')
+            ->withPivot('quantity', 'price');
+    }
 }

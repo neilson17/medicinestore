@@ -16,7 +16,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <html lang="en" class="no-js">
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
-	<head>
+<head>
 <meta charset="utf-8"/>
 <title>Conquer | UI Features - Modals</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,6 +40,8 @@ License: You must have a valid license purchased only from themeforest(the above
 <link href="{{asset('assets/css/custom.css')}}" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES -->
 <link rel="shortcut icon" href="favicon.ico"/>
+
+@yield('javascript')
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
@@ -148,6 +150,12 @@ License: You must have a valid license purchased only from themeforest(the above
 				<a href="{{url('medicines')}}">
 				<i class="fa fa-glass"></i>
 				<span class="title">Medicine</span>
+				</a>
+			</li>
+            <li class="start ">
+				<a href="{{route('transactions.index')}}">
+				<i class="fa fa-shopping-cart"></i>
+				<span class="title">Transaction</span>
 				</a>
 			</li>
 		</ul>

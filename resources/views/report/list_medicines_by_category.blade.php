@@ -1,6 +1,3 @@
-@extends('layout.conquer')
-
-@section('content')
 <div class="container">
   <h2>List Medicine By Category</h2>
   <p>Category ID : {{$id_category}} with name : {{$name_cat}}</p>
@@ -32,4 +29,3 @@
     </tbody>
   </table>
 </div>
-@endsection

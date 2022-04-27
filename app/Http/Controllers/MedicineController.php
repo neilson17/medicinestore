@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Medicine;
+use App\Category;
 use Illuminate\Http\Request;
 use DB;
 
@@ -42,7 +43,8 @@ class MedicineController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('medicine.create', ["datacategory"=>$categories]);
     }
 
     /**
@@ -53,7 +55,26 @@ class MedicineController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Medicine();
+        $data->generic_name = $request->get('generic_name');
+        $data->form = $request->get('form');
+        $data->restriction_formula = $request->get('restriction_formula');
+        $data->price = $request->get('price');
+        $data->description = $request->get('description');
+        $data->category_id = $request->get('category');
+        $data->faskes1 = ($request->get('faskes1') == "on") ? 1 : 0;
+        $data->faskes2 = ($request->get('faskes2') == "on") ? 1 : 0;
+        $data->faskes3 = ($request->get('faskes3') == "on") ? 1 : 0;
+
+        // Save Image
+        $file=$request->file('image');
+        $imgFolder='images';
+        $imgFile= strtolower(str_replace(' ', '', ($data->generic_name.$data->form))).'.'.$file->getClientOriginalExtension();
+        $file->move($imgFolder, $imgFile);
+        $data->image=$imgFile;
+
+        $data->save();
+        return redirect()->route('medicines.index')->with('status', 'Data baru berhasil tersimpan');
     }
 
     /**
@@ -246,5 +267,15 @@ class MedicineController extends Controller
         $result = DB::select('select * from medicines m inner join categories c on m.category_id = c.id where m.price = (select max(price) from medicines)');
 
         dd($result);
+    }
+ 
+    public function showInfo(){
+        $result = Medicine::orderBy('price', 'desc')->first();
+
+        return response()->json(array(
+        'status'=>'oke',
+        'msg'=>"<div class='alert alert-info'>
+                Did you know? <br>Harga obat termahal adalah ".$result->generic_name." ".$result->form." dengan harga ".$result->price."</div>"
+        ),200);
     }
 }
