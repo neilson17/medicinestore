@@ -82,6 +82,14 @@ Daftar Obat <small>daftar semua obat yang ada di apotik ini</small>
                 </div>
               </div>
             </td>
+            <td>
+                <a href="{{url('medicines/'.$obat->id.'/edit')}}" class="btn btn-warning">Edit</a>
+                <form method="POST" action="{{url('medicines/'.$obat->id)}}">
+                    @csrf
+                    @method('DELETE')
+                    <input type="submit" class="btn btn-danger" value="Hapus" onclick="if(!confirm('Apakah anda yakin menghapus data {{$obat->generic_name}}')) return false;">
+                </form>
+            </td>
         </tr>  
         @endforeach
     </tbody>

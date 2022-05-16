@@ -6,6 +6,7 @@ use App\Medicine;
 use App\Category;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\File; 
 
 class MedicineController extends Controller
 {
@@ -98,7 +99,10 @@ class MedicineController extends Controller
      */
     public function edit(Medicine $medicine)
     {
-        //
+        // dd($medicine);
+        $data = $medicine;
+        $categories = Category::all();
+        return view("medicine.edit", compact('data', 'categories'));
     }
 
     /**
@@ -110,7 +114,26 @@ class MedicineController extends Controller
      */
     public function update(Request $request, Medicine $medicine)
     {
-        //
+        $medicine->generic_name = $request->get('generic_name');
+        $medicine->form = $request->get('form');
+        $medicine->restriction_formula = $request->get('restriction_formula');
+        $medicine->price = $request->get('price');
+        $medicine->description = $request->get('description');
+        $medicine->category_id = $request->get('category');
+        $medicine->faskes1 = ($request->get('faskes1') == "on") ? 1 : 0;
+        $medicine->faskes2 = ($request->get('faskes2') == "on") ? 1 : 0;
+        $medicine->faskes3 = ($request->get('faskes3') == "on") ? 1 : 0;
+        if ($request->hasFile('image')) {
+            File::delete($medicine->image);
+            $file = $request->file('image');
+            $imgFolder = "images";
+            $imgFile = strtolower(str_replace(' ', '', ($medicine->generic_name.$medicine->form))).'.'.$file->getClientOriginalExtension();
+            $file->move($imgFolder, $imgFile);
+            $medicine->image = $imgFile;
+        }
+        $medicine->save();
+
+        return redirect()->route('medicines.index')->with('status', 'Data berhasil diubah');
     }
 
     /**
@@ -121,7 +144,22 @@ class MedicineController extends Controller
      */
     public function destroy(Medicine $medicine)
     {
-        //
+        try{
+            // Untuk proses langsung delete tanpa menghapus data medicine di many to many
+            // $medicine->delete();
+
+            // Untuk proses delete many to many dari medicines dan transactions harus di detach terlebih dahulu agar tidak error. Karena medicine bisa saja ada di tabel many to many antara medicine dan transactions sehingga tidak bisa langsung dihapus.
+            // Detach akan menghapus data di tabel many to many.
+            $medicine->transactions()->detach();
+            $medicine->delete();
+
+            return redirect()->route('medicines.index')->with('status', 'Data berhasil dihapus');
+        }
+        catch(\PDOException $e)
+        {
+            $msg = 'Data gagal dihapus'. $e;
+            return redirect()->route('medicines.index')->with('status', $msg);
+        }
     }
 
     public function coba1(){
