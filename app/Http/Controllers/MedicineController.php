@@ -25,7 +25,8 @@ class MedicineController extends Controller
         // $result = DB::table("medicines")->get();
 
         // Eloquent Model (karna pake eloquent di model bisa auto ke detect anak tablenya maka harus pake eloquent biar bisa tau anaknya)
-        $result = Medicine::all();
+        $datacategory = Category::all();
+        $data = Medicine::all();
 
         # Untuk testing hasil datanya
         // dd($result);
@@ -34,7 +35,7 @@ class MedicineController extends Controller
         // return view('medicine.index', compact('result'));
 
         // Cara View 2
-        return view('medicine.index', ["data"=>$result]);
+        return view('medicine.index', compact('data', 'datacategory'));
     }
 
     /**
@@ -315,5 +316,56 @@ class MedicineController extends Controller
         'msg'=>"<div class='alert alert-info'>
                 Did you know? <br>Harga obat termahal adalah ".$result->generic_name." ".$result->form." dengan harga ".$result->price."</div>"
         ),200);
+    }
+
+    public function getEditForm(Request $request){
+        $id = $request->get('id');
+        $data = Medicine::find($id);
+        $categories = Category::all();
+        return response()->json(array(
+            'status'=> 'ok',
+            'msg' =>view('medicine.getEditForm', compact('data', 'categories'))->render()
+        ), 200);
+    }
+
+    public function getEditForm2(Request $request){
+        $id = $request->get('id');
+        $data = Medicine::find($id);
+        $categories = Category::all();
+        return response()->json(array(
+            'status'=> 'ok',
+            'msg' =>view('medicine.getEditForm2', compact('data', 'categories'))->render()
+        ), 200);
+    }
+
+    public function deleteData(Request $request){
+        $id = $request->get('id');
+        $medicine = Medicine::find($id);
+        $medicine->transactions()->detach();
+        $medicine->delete();
+        return response()->json(array(
+            'status'=> 'ok',
+            'msg' => 'berhasil menghapus data'
+        ), 200);
+    }
+
+    public function saveData(Request $request) {
+        $id = $request->get('id');
+        $medicine = Medicine::find($id);
+        $medicine->generic_name = $request->get('generic_name');
+        $medicine->form = $request->get('form');
+        $medicine->restriction_formula = $request->get('restriction_formula');
+        $medicine->price = $request->get('price');
+        $medicine->description = $request->get('description');
+        $medicine->category_id = $request->get('category_id');
+        $medicine->faskes1 = $request->get('faskes1');
+        $medicine->faskes2 = $request->get('faskes2');
+        $medicine->faskes3 = $request->get('faskes3');
+        $medicine->save();
+
+        return response()->json(array(
+            'status' => 'ok',
+            'msg' => 'Berhasil mengubah data',
+        ), 200);
     }
 }
