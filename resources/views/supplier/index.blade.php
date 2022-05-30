@@ -48,11 +48,14 @@ Daftar Supplier <small>daftar semua supplier yang ada di apotik ini</small>
             <td id="td_address_{{$sup->id}}">{{$sup->address}}</td>
             <td>
                 <a href="{{url('suppliers/'.$sup->id.'/edit')}}" class="btn btn-warning">Edit</a>
+
+                @can('delete-permission')
                 <form method="POST" action="{{url('suppliers/'.$sup->id)}}">
                     @csrf
                     @method('DELETE')
                     <input type="submit" class="btn btn-danger" value="Hapus" onclick="if(!confirm('Apakah anda yakin menghapus data {{$sup->name}}')) return false;">
                 </form>
+                @endcan
             </td>
             <th>
                 <a href="#modalEdit" data-toggle="modal" onclick="getEditForm({{$sup->id}})" class="btn btn-warning">Edit 2</a>

@@ -100,7 +100,8 @@ class MedicineController extends Controller
      */
     public function edit(Medicine $medicine)
     {
-        // dd($medicine);
+        $this->authorize('edit-permission', $medicine);
+
         $data = $medicine;
         $categories = Category::all();
         return view("medicine.edit", compact('data', 'categories'));
@@ -115,6 +116,8 @@ class MedicineController extends Controller
      */
     public function update(Request $request, Medicine $medicine)
     {
+        $this->authorize('edit-permission', $medicine);
+
         $medicine->generic_name = $request->get('generic_name');
         $medicine->form = $request->get('form');
         $medicine->restriction_formula = $request->get('restriction_formula');
@@ -145,6 +148,7 @@ class MedicineController extends Controller
      */
     public function destroy(Medicine $medicine)
     {
+        $this->authorize('delete-permission', $medicine);
         try{
             // Untuk proses langsung delete tanpa menghapus data medicine di many to many
             // $medicine->delete();

@@ -75,10 +75,18 @@ License: You must have a valid license purchased only from themeforest(the above
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                 <img alt="" src="{{asset('assets/img/avatar3_small.jpg')}}"/>
                 <span class="username">
-                Nick </span>
+					@if(Auth::user())
+					{{Auth::user()->name}} 
+					@else
+					Guest (please login)
+					@endif
+				</span>
                 <i class="fa fa-angle-down"></i>
                 </a>
                 <ul class="dropdown-menu">
+					<li>
+                        <a href="{{url('login')}}"><i class="fa fa-user"></i> Login</a>
+                    </li>
                     <li>
                         <a href="extra_profile.html"><i class="fa fa-user"></i> My Profile</a>
                     </li>
@@ -98,7 +106,11 @@ License: You must have a valid license purchased only from themeforest(the above
                     <li class="divider">
                     </li>
                     <li>
-                        <a href="login.html"><i class="fa fa-key"></i> Log Out</a>
+						<form action="{{route('logout')}}" method="POST">
+							@csrf
+							<i class="fa fa-key"></i>
+                        	<input type="SUBMIT" value="logout" class="btn btn-danger">
+						</form>
                     </li>
                 </ul>
             </li>
